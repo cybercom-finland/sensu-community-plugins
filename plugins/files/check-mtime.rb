@@ -62,9 +62,9 @@ class Mtime < Sensu::Plugin::Check::CLI
       run_check(:critical, age) || run_check(:warning, age) || ok("file #{config[:file]} is #{age} seconds old")
     else
       if config[:ok_no_exist]
-        ok 'file #{config[:file]} does not exist'
+        ok "file #{config[:file]} does not exist"
       else
-        critical 'file #{config[:file]} not found'
+        critical "file #{config[:file]} not found"
       end
     end
   end
