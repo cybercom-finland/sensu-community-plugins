@@ -1,0 +1,10 @@
+{
+  "zenoss": {
+    "server": "zenoss-server",
+    "port": 8081,
+    "user": "admin",
+    "password": "zenoss",
+    "device": "device-in-zenoss",
+    "event_class": "/Status/Sensu"
+  }
+}
