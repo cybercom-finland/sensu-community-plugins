@@ -31,6 +31,11 @@ class CheckDisk < Sensu::Plugin::Check::CLI
     :description => 'Ignore mount point(s)',
     :proc => proc {|a| a.split(',') }
 
+  option :remotefs,
+    :short => '-r',
+    :description => 'Include remote filesystems in df',
+    :boolean => true
+
   option :ignoreline,
     :short => '-l PATTERN[,PATTERN]',
     :description => 'Ignore df line(s) matching pattern(s)',
@@ -78,7 +83,13 @@ class CheckDisk < Sensu::Plugin::Check::CLI
   end
 
   def read_df
-    `df -lPT`.split("\n").drop(1).each do |line|
+    if config[:remotefs]
+      df_params = "-PT"
+    else
+      df_params = "-lPT"
+    end
+
+    `df #{df_params}`.split("\n").drop(1).each do |line|
       begin
         _fs, type, _blocks, _used, _avail, capacity, mnt = line.split
         next if config[:includeline] && !config[:includeline].find { |x| line.match(x) }
@@ -98,7 +109,9 @@ class CheckDisk < Sensu::Plugin::Check::CLI
       end
     end
 
-    `df -lPTi`.split("\n").drop(1).each do |line|
+    df_params = df_params + "i"
+
+    `df #{df_params}`.split("\n").drop(1).each do |line|
       begin
         _fs, type, _inodes, _used, _avail, capacity, mnt = line.split
         next if config[:includeline] && !config[:includeline].find { |x| line.match(x) }
