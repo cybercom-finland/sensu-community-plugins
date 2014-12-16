@@ -35,13 +35,13 @@ require "timeout"
 class Zenoss < Sensu::Handler
     def status_to_severity
       case @event['check']['status']
-          # Resolved / Clear
+          # Resolved to Clear
           when 0
               0
-          # Warning / Warning
+          # Warning to Warning
           when 1
               3
-          # Critical / Critical
+          # Critical to Critical
           when 2
               5
           # Unknown to Critical
@@ -57,9 +57,8 @@ class Zenoss < Sensu::Handler
           "eventClass" => settings["zenoss"]["event_class"],
           "component"  => @event["client"]["name"],
           "summary"    => @event["check"]["output"],
-          "mesage"     => @event,
+          "message"     => @event,
           "severity"   => status_to_severity,
-
         }
     end
 
