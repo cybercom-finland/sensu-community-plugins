@@ -55,9 +55,10 @@ class Zenoss < Sensu::Handler
         {
           "device"     => settings["zenoss"]["device"],
           "eventClass" => settings["zenoss"]["event_class"],
+          "eventKey"   => @event["check"]["name"],
           "component"  => @event["client"]["name"],
           "summary"    => @event["check"]["output"],
-          "message"     => @event,
+          "message"    => @event,
           "severity"   => status_to_severity,
         }
     end
