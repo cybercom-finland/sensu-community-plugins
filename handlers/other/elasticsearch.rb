@@ -1,6 +1,10 @@
 #!/usr/bin/env ruby
 #
 # Sensu Elasticsearch Handler
+#
+# https://github.com/inokappa/sensu-handler-elasticserch
+#
+# Modified by Cybercom Finland 2015
 
 require 'rubygems' if RUBY_VERSION < '1.9.0'
 require 'sensu-handler'
@@ -19,7 +23,7 @@ class Elasticsearch < Sensu::Handler
   end
 
   def es_index
-    settings['elasticsearch']['index'] || 'sensu'
+    settings['elasticsearch']['index'] + "-#{DateTime.now.strftime '%Y.%m.%d'}" || 'sensu'
   end
 
   def es_type
